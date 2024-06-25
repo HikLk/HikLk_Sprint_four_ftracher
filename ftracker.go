@@ -54,7 +54,7 @@ func ShowTrainingInfo(
 	case trainingType == "Бег":
 		distance := Distance(action)
 		speed := MeanSpeed(action, duration)
-		calories := RunSpentCal(action, weight, duration)
+		calories := RunningSpentCalories(action, weight, duration)
 		return fmt.Sprintf(`Тип тренировки: %s
 Длительность: %.2f ч.
 Дистанция: %.2f км.
@@ -74,7 +74,7 @@ func ShowTrainingInfo(
 	case trainingType == "Плавание":
 		distance := Distance(action)
 		speed := SwimmingMeanSpeed(lengthPool, countPool, duration)
-		calories := SwimSpentCal(lengthPool, countPool, duration, weight)
+		calories := SwimmingSpentCalories(lengthPool, countPool, duration, weight)
 		return fmt.Sprintf(`Тип тренировки: %s
 Длительность: %.2f ч.
 Дистанция: %.2f км.
@@ -92,14 +92,14 @@ const (
 	RunningCaloriesMeanSpeedShift      = 1.79 // среднее количество сжигаемых калорий при беге.
 )
 
-// RunSpentCal возвращает количество потраченных колорий при беге.
+// RunningSpentCalories возвращает количество потраченных колорий при беге.
 //
 // Параметры:
 //
 // action int — количество совершенных действий(число шагов при ходьбе и беге, либо гребков при плавании).
 // weight float64 — вес пользователя.
 // duration float64 — длительность тренировки в часах.
-func RunSpentCal(action int, weight, duration float64) float64 {
+func RunningSpentCalories(action int, weight, duration float64) float64 {
 	scaledSpeed := RunningCaloriesMeanSpeedMultiplier * MeanSpeed(action, duration) * RunningCaloriesMeanSpeedShift
 	return scaledSpeed * weight * duration * MinInH / MInKm
 }
@@ -144,7 +144,7 @@ func SwimmingMeanSpeed(lengthPool, countPool int, duration float64) float64 {
 	return float64(lengthPool) * float64(countPool) / MInKm / duration
 }
 
-// SwimSpentCal возвращает количество потраченных калорий при плавании.
+// SwimmingSpentCalories возвращает количество потраченных калорий при плавании.
 //
 // Параметры:
 //
@@ -152,7 +152,7 @@ func SwimmingMeanSpeed(lengthPool, countPool int, duration float64) float64 {
 // countPool int — сколько раз пользователь переплыл бассейн.
 // duration float64 — длительность тренировки в часах.
 // weight float64 — вес пользователя.
-func SwimSpentCal(lengthPool, countPool int, duration, weight float64) float64 {
+func SwimmingSpentCalories(lengthPool, countPool int, duration, weight float64) float64 {
 	shiftedSpeed := SwimmingMeanSpeed(lengthPool, countPool, duration) + SwimmingCaloriesMeanSpeedShift
 	return shiftedSpeed * SwimmingCaloriesWeightMultiplier * weight * duration
 }
