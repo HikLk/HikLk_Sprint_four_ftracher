@@ -38,7 +38,7 @@ func Test_distance(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Distance(tt.args.action); got != tt.want {
+			if got := distance(tt.args.action); got != tt.want {
 				t.Errorf("distance() = %v, want %v", got, tt.want)
 			}
 		})
@@ -75,7 +75,7 @@ func Test_meanSpeed(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := MeanSpeed(tt.args.action, tt.args.duration); got != tt.want {
+			if got := meanSpeed(tt.args.action, tt.args.duration); got != tt.want {
 				t.Errorf("meanSpeed() = %v, want %v", got, tt.want)
 			}
 		})
