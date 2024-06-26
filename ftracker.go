@@ -8,11 +8,11 @@ import (
 
 // Основные константы, необходимые для расчетов.
 const (
-	LenStep   = 0.65  // средняя длина шага.
-	MInKm     = 1000  // количество метров в километре.
-	MinInH    = 60    // количество минут в часе.
-	KmhInMsec = 0.278 // коэффициент для преобразования км/ч в м/с.
-	CmInM     = 100   // количество сантиметров в метре.
+	lenStep   = 0.65  // средняя длина шага.
+	mInKm     = 1000  // количество метров в километре.
+	minInH    = 60    // количество минут в часе.
+	kmhInMsec = 0.278 // коэффициент для преобразования км/ч в м/с.
+	cmInM     = 100   // количество сантиметров в метре.
 )
 
 // distance возвращает дистанцию(в километрах), которую преодолел пользователь за время тренировки.
@@ -21,7 +21,7 @@ const (
 //
 // action int — количество совершенных действий (число шагов при ходьбе и беге, либо гребков при плавании).
 func distance(action int) float64 {
-	return float64(action) * LenStep / MInKm
+	return float64(action) * lenStep / mInKm
 }
 
 // meanSpeed возвращает значение средней скорости движения во время тренировки.
@@ -101,7 +101,7 @@ const (
 // duration float64 — длительность тренировки в часах.
 func RunningSpentCalories(action int, weight, duration float64) float64 {
 	scaledSpeed := runningCaloriesMeanSpeedMultiplier * meanSpeed(action, duration) * runningCaloriesMeanSpeedShift
-	return scaledSpeed * weight * duration * MinInH / MInKm
+	return scaledSpeed * weight * duration * minInH / mInKm
 }
 
 // Константы для расчета калорий, расходуемых при ходьбе.
@@ -119,10 +119,10 @@ const (
 // weight float64 — вес пользователя.
 // height float64 — рост пользователя.
 func WalkingSpentCalories(action int, duration, weight, height float64) float64 {
-	walkSpeed := math.Pow(meanSpeed(action, duration)*KmhInMsec, 2)
-	heightMS := height / CmInM
+	walkSpeed := math.Pow(meanSpeed(action, duration)*kmhInMsec, 2)
+	heightMS := height / cmInM
 	scaledWeight := walkingCaloriesWeightMultiplier*weight + (walkSpeed/heightMS)*walkingSpeedHeightMultiplier*weight
-	return scaledWeight * duration * MinInH
+	return scaledWeight * duration * minInH
 }
 
 // Константы для расчета калорий, расходуемых при плавании.
@@ -142,7 +142,7 @@ func SwimmingMeanSpeed(lengthPool, countPool int, duration float64) float64 {
 	if duration == 0 {
 		return 0
 	}
-	return float64(lengthPool) * float64(countPool) / MInKm / duration
+	return float64(lengthPool) * float64(countPool) / mInKm / duration
 }
 
 // SwimmingSpentCalories возвращает количество потраченных калорий при плавании.
